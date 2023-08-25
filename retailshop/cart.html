@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- Add your meta tags, CSS links, and title here -->
+</head>
+<body>
+  <h1>Your Cart</h1>
+  <div id="cart-items">
+    <!-- The cart items will be dynamically added here -->
+  </div>
+
+  <script>
+    // Function to display the cart items on the Cart page
+    function displayCartItems() {
+      const cartItems = JSON.parse(localStorage.getItem('cart')) || [];
+
+      if (cartItems.length === 0) {
+        document.getElementById('cart-items').innerHTML = "<p>Your cart is empty.</p>";
+        return;
+      }
+
+      const cartHTML = cartItems.map(item => `
+        <div>
+          <img src="${item.image}" alt="${item.name}" style="width: 100px;">
+          <p>${item.name}</p>
+          <p>Price: RS${item.price}</p>
+          <p>Quantity: ${item.quantity}</p>
+        </div>
+      `).join('');
+
+      document.getElementById('cart-items').innerHTML = cartHTML;
+    }
+
+    // Call the function to display the cart items when the Cart page is loaded
+    displayCartItems();
+  </script>
+</body>
+</html>

@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Daily Shopping Price</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 20px;
+            background-color: #f9f9f9;
+        }
+
+        h1 {
+            margin-bottom: 20px;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        form {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        label {
+            margin-right: 10px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: center;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        tr:hover {
+            background-color: #ddd;
+        }
+
+        button {
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+            margin-left: 10px;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        .btn-container {
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <h1>Anuual Slaes Report</h1>
+    <form>
+        <label for="date">Date:</label>
+        <input type="date" id="date" required>
+        <label for="price">Price ($):</label>
+        <input type="number" id="price" required>
+        <button type="button" onclick="addPrice()">Add</button>
+        <button type="button" onclick="clearData()">Clear</button>
+    </form>
+
+    <h2>Daily Sales Report</h2>
+    <table>
+        <tr>
+            <th>Date</th>
+            <th>Price ($)</th>
+        </tr>
+        <tbody id="dailySalesTableBody">
+        </tbody>
+    </table>
+
+    <script>
+        let dailySales = [];
+
+        // Function to add the price to the daily sales array
+        function addPrice() {
+            const date = document.getElementById('date').value;
+            const price = parseFloat(document.getElementById('price').value);
+
+            if (date && !isNaN(price)) {
+                dailySales.push({ date, price });
+                updateDailySalesTable();
+                saveDataToLocalStorage();
+            }
+        }
+
+        // Function to update the daily sales table with the current data in the dailySales array
+        function updateDailySalesTable() {
+            const tableBody = document.getElementById('dailySalesTableBody');
+            tableBody.innerHTML = '';
+
+            for (const sale of dailySales) {
+                const row = document.createElement('tr');
+                const dateCell = document.createElement('td');
+                const priceCell = document.createElement('td');
+
+                dateCell.textContent = sale.date;
+                priceCell.textContent = sale.price.toFixed(2);
+
+                row.appendChild(dateCell);
+                row.appendChild(priceCell);
+                tableBody.appendChild(row);
+            }
+        }
+
+        // Function to clear the data from the table and local storage
+        function clearData() {
+            dailySales = [];
+            updateDailySalesTable();
+            clearLocalStorage();
+        }
+
+        // Function to save data to the local storage
+        function saveDataToLocalStorage() {
+            localStorage.setItem('dailySalesData', JSON.stringify(dailySales));
+        }
+
+        // Function to load data from the local storage
+        function loadDataFromLocalStorage() {
+            const data = localStorage.getItem('dailySalesData');
+            if (data) {
+                dailySales = JSON.parse(data);
+                updateDailySalesTable();
+            }
+        }
+
+        // Function to clear the data from the local storage
+        function clearLocalStorage() {
+            localStorage.removeItem('dailySalesData');
+        }
+
+        // Load data from local storage when the page loads
+        window.onload = loadDataFromLocalStorage;
+    </script>
+</body>
+</html>

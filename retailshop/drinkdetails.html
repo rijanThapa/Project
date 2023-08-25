@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Details od Wai Wai</title>
+    <style>
+        table{
+            border-collapse: collapse;  
+        }
+        .image img{
+            width: 40rem;
+            height: 26rem;
+        }
+        .table img{
+            width: 10rem;
+            height: 10rem;
+        }
+        td,th {
+  border: 1px solid black;
+  text-align: center;
+}
+
+        .left{
+            display: flex;
+            justify-content:space-evenly;
+            gap: 30px;
+            flex-wrap: wrap;
+        }
+        @media (max-width:600px){
+            .image img{
+                width: 26rem;
+                height: 17rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="left">
+        <div class="image">
+            <img src="img/colddrink.jpg">
+
+        </div>
+        <div class="table">
+            <table style="width:100%">
+               
+                
+                <tr>
+                  <td>Coca cola</td>
+                  <td>Rs 235</td>
+                </tr>
+                <tr>
+                    <td>Fanta</td>
+                    <td> Rs 235</td>
+                  </tr>
+                  <tr>
+                    <td>Sprite </td>
+                    <td> Rs 570</td>
+                  </tr>
+                  <tr>
+                    <td>Manufacture date</td>
+                    <td>July 6,2023</td>
+                  </tr>
+                  <tr>
+                    <td>Expire date</td>
+                    <td>Janaury-6,2024</td>
+                  </tr>
+              </table>
+        </div>
+    </div>
+</body>
+</html>

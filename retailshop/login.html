@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<!-- Coding By CodingNepal - codingnepalweb.com -->
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Login & Registration Form</title>
+  <!---Custom CSS File--->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+    <input type="checkbox" id="check">
+    <div class="login form">
+      <header>Login</header>
+      <form action="#">
+        <div id="loginForm">
+          <h2>Login</h2>
+          <input type="text" id="loginEmail" placeholder="Email">
+          <input type="password" id="loginPassword" placeholder="Password">
+          <button onclick="login()">Login</button>
+          
+        </div>
+      
+      <div class="signup">
+        <span class="signup">Don't have an account?
+         <label for="check">Signup</label>
+        </span>
+      </div>
+    </div>
+  </form>
+    <div class="registration form">
+      <header>Signup</header>
+      <form action="#">
+        <div id="signupForm">
+          <h2>Signup</h2>
+          <input type="text" id="signupEmail" placeholder="Email">
+          <input type="password" id="signupPassword" placeholder="Password">
+          <button onclick="signup()">Signup</button>
+          
+        </div>
+      
+      <div class="signup">
+        <span class="signup">Already have an account?
+         <label for="check">Login</label>
+        </span>
+      </div>
+    </div>
+  </div>
+</form>
+  <div id="loggedInContent" style="display: none;">
+    <!-- Put your website content here -->
+    <h1>Welcome to My Website!</h1>
+    <p>This is some exclusive content only accessible after login.</p>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+
+</html>

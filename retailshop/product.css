@@ -1,0 +1,19 @@
+.flex1{
+    display: flex;
+    justify-content: center;
+    justify-content: space-evenly;
+    flex-wrap: wrap;
+    }
+    .box{
+        width: 22rem;
+        height: 22rem;
+    
+        border: 5px solid pink;
+    }
+    .box img{
+        width: 21rem;
+        height: 18rem;
+    }
+    .desc{
+        text-align: center;
+    }

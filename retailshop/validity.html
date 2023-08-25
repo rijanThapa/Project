@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Signup and Login Form</title>
+  <style>
+    /* Add your custom styles here */
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      margin: 50px;
+    }
+
+    #signupForm, #loginForm {
+      display: block;
+    }
+
+    #loggedInContent {
+      display: none;
+    }
+
+    input {
+      margin: 5px;
+      padding: 5px;
+    }
+
+    button {
+      padding: 5px 10px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #45a049;
+    }
+  </style>
+</head>
+<body>
+  <div id="signupForm">
+    <h2>Signup</h2>
+    <input type="text" placeholder="Username" id="signupUsername">
+    <input type="password" placeholder="Password" id="signupPassword">
+    <button onclick="signup()">Signup</button>
+    <p>Already have an account<a href="#" >Logi</a></p>
+  </div>
+
+  <div id="loginForm">
+    <h2>Login</h2>
+    <input type="text" placeholder="Username" id="loginUsername">
+    <input type="password" placeholder="Password" id="loginPassword">
+    <button onclick="login()">Login</button>
+    <p>Don't have an account<a href="#" >Signup</a></p>
+  </div>
+
+  <div id="loggedInContent" style="display: none;">
+    <!-- Put your website content here -->
+    <h1>Welcome to My Website!</h1>
+    <p>This is some exclusive content only accessible after login.</p>
+  </div>
+
+  <script>
+    const users = []; // This array will store user information (username and password).
+
+    function signup() {
+      var username = document.getElementById('signupUsername').value;
+      var password = document.getElementById('signupPassword').value;
+
+      // Validate the input fields
+      if (username.trim() === '' || password.trim() === '') {
+        alert('Please fill in all the fields for signup.');
+      } else {
+        // Check if the username already exists
+        if (users.find((user) => user.username === username)) {
+          alert('Username already exists. Please choose a different username.');
+        } else {
+          // Store the user information
+          users.push({ username, password });
+          alert('Signup successful! Now you can log in.');
+        }
+      }
+    }
+
+    function login() {
+      var username = document.getElementById('loginUsername').value;
+      var password = document.getElementById('loginPassword').value;
+
+      // Validate the input fields
+      if (username.trim() === '' || password.trim() === '') {
+        alert('Please fill in all the fields for login.');
+      } else {
+        // Find the user by username
+        const user = users.find((user) => user.username === username);
+
+        if (user && user.password === password) {
+          alert('Login successful! Welcome to the website.');
+          showLoggedInContent();
+        } else {
+          alert('Invalid credentials. Please try again.');
+        }
+      }
+    }
+
+    function showLoggedInContent() {
+      var signupForm = document.getElementById('signupForm');
+      var loginForm = document.getElementById('loginForm');
+      var loggedInContent = document.getElementById('loggedInContent');
+
+      signupForm.style.display = 'none';
+      loginForm.style.display = 'none';
+      loggedInContent.style.display = 'block';
+    }
+  </script>
+</body>
+</html>

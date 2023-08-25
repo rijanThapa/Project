@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Daily Sales Report</title>
+  <style>
+    /* CSS Styles */
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+
+    #container {
+      max-width: 500px;
+      margin: 50px auto;
+      padding: 20px;
+      border: 1px solid #ccc;
+    }
+
+    h1 {
+      text-align: center;
+    }
+
+    #login-form {
+      margin-bottom: 20px;
+      text-align: center;
+    }
+
+    #sales-report {
+      display: none;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+
+    th,
+    td {
+      border: 1px solid #ccc;
+      padding: 8px;
+      text-align: left;
+    }
+
+    th {
+      background-color: #f2f2f2;
+      font-weight: bold;
+    }
+
+    #total-price {
+      text-align: right;
+      font-weight: bold;
+    }
+
+    #sales-input-form {
+      margin-bottom: 20px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 5px;
+    }
+
+    input[type="text"],
+    input[type="number"] {
+      width: 100%;
+      padding: 8px;
+      margin-bottom: 10px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+
+    button {
+      background-color: #4CAF50;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #45a049;
+    }
+
+    .hidden {
+      display: none;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="container">
+    <h1>Daily Sales Report</h1>
+    <form id="login-form">
+      <input type="password" id="password-input" placeholder="Enter password">
+      <button type="submit" id="login-button">Login</button>
+    </form>
+    <div id="sales-report">
+      <form id="sales-input-form">
+        <h2>Add Product</h2>
+        <label for="product-name">Product Name:</label>
+        <input type="text" id="product-name" required><br>
+        <label for="quantity">Quantity:</label>
+        <input type="number" id="quantity" required><br>
+        <label for="price">Price:</label>
+        <input type="number" id="price" required><br>
+        <button type="submit" id="add-product-button">Add Product</button>
+        <button id="clear-data-button">Clear Data</button>
+
+      <a href="admin1.html"><P>Next page</P></a>
+
+      </form>
+      <table id="sales-table">
+        <thead>
+          <tr>
+            <th>Product Name</th>
+            <th>Quantity</th>
+            <th>Price</th>
+            <th>Total Price</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- Sales report data will be dynamically added here -->
+        </tbody>
+        <tfoot>
+          <tr>
+            <td colspan="3" id="total-price">Total Price:</td>
+            <td id="total-amount"></td>
+          </tr>
+        </tfoot>
+      </table>
+    </div>
+  </div>
+
+  <script>
+    const PASSWORD = 'rijan'; // Replace 'your_password' with your desired password
+
+    const loginForm = document.getElementById('login-form');
+    const passwordInput = document.getElementById('password-input');
+    const salesReport = document.getElementById('sales-report');
+    const salesInputForm = document.getElementById('sales-input-form');
+    const productNameInput = document.getElementById('product-name');
+    const quantityInput = document.getElementById('quantity');
+    const priceInput = document.getElementById('price');
+    const salesTableBody = document.getElementById('sales-table').getElementsByTagName('tbody')[0];
+    const totalAmountCell = document.getElementById('total-amount');
+
+    let totalAmount = 0;
+
+    loginForm.addEventListener('submit', function (event) {
+      event.preventDefault();
+      const password = passwordInput.value;
+
+      if (password === PASSWORD) {
+        loginForm.style.display = 'none';
+        salesReport.style.display = 'block';
+      } else {
+        alert('Invalid password. Please try again.');
+      }
+    });
+
+    salesInputForm.addEventListener('submit', function (event) {
+      event.preventDefault();
+      const productName = productNameInput.value;
+      const quantity = parseInt(quantityInput.value);
+      const price = parseFloat(priceInput.value);
+
+      if (productName.trim() === '' || isNaN(quantity) || isNaN(price)) {
+        alert('Invalid input. Please enter valid data.');
+        return;
+      }
+
+
+      // Calculate total price for the product
+      const totalPrice = quantity * price;
+      totalAmount += totalPrice;
+
+      // Add the product to the sales table
+      const row = salesTableBody.insertRow();
+      row.insertCell(0).textContent = productName;
+      row.insertCell(1).textContent = quantity;
+      row.insertCell(2).textContent = price.toFixed(2);
+      row.insertCell(3).textContent = totalPrice.toFixed(2);
+
+      // Update the total amount cell
+      totalAmountCell.textContent = totalAmount.toFixed(2);
+
+      // Clear the input fields
+      productNameInput.value = '';
+      quantityInput.value = '';
+      priceInput.value = '';
+
+      // Create an object to store sales data
+      const salesData = {
+        productName: productName,
+        quantity: quantity,
+        price: price,
+        totalPrice: totalPrice
+      };
+
+      // Retrieve existing sales data from local storage
+      let existingSalesData = localStorage.getItem('dailySalesData');
+
+      if (existingSalesData) {
+        // Parse existing sales data from JSON
+        existingSalesData = JSON.parse(existingSalesData);
+
+        // Add the new sales data to the existing data
+        existingSalesData.push(salesData);
+      } else {
+        // If there's no existing data, create a new array with the current sales data
+        existingSalesData = [salesData];
+      }
+
+      // Save the updated sales data to local storage
+      saveSalesDataToLocalStorage(existingSalesData);
+    });
+
+    function saveSalesDataToLocalStorage(salesData) {
+      // Convert the sales data to a JSON string
+      const salesDataJson = JSON.stringify(salesData);
+
+      // Save the JSON string to local storage under the key 'dailySalesData'
+      localStorage.setItem('dailySalesData', salesDataJson);
+
+    }
+
+    // When the page loads, check if there is any existing sales data in local storage and populate the sales table with it
+    document.addEventListener('DOMContentLoaded', function () {
+      // Retrieve sales data from local storage
+      const existingSalesData = localStorage.getItem('dailySalesData');
+
+      if (existingSalesData) {
+        // Parse existing sales data from JSON
+        const salesData = JSON.parse(existingSalesData);
+
+        const clearDataButton = document.getElementById('clear-data-button');
+
+        clearDataButton.addEventListener('click', function () {
+          // Clear the sales table
+          while (salesTableBody.firstChild) {
+            salesTableBody.removeChild(salesTableBody.firstChild);
+          }
+
+          // Reset the total amount to 0
+          totalAmount = 0;
+          totalAmountCell.textContent = totalAmount.toFixed(2);
+
+          // Clear the local storage
+          localStorage.removeItem('dailySalesData');
+        });
+        const goToAnotherPageButton = document.getElementById('go-to-another-page-button');
+
+
+        // Populate the sales table with the existing sales data
+        salesData.forEach(function (sale) {
+          const row = salesTableBody.insertRow();
+          row.insertCell(0).textContent = sale.productName;
+          row.insertCell(1).textContent = sale.quantity;
+          row.insertCell(2).textContent = sale.price.toFixed(2);
+          row.insertCell(3).textContent = sale.totalPrice.toFixed(2);
+
+          // Update the total amount with the existing data
+          totalAmount += sale.totalPrice;
+          totalAmountCell.textContent = totalAmount.toFixed(2);
+        });
+      }
+    });
+  </script>
+</body>
+
+</html>
